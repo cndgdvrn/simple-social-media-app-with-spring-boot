@@ -50,7 +50,7 @@ public class ErrorHandler {
                 validationErrors.put("username", "This username is already in use.");
             }
 
-            apiError.setMessage("Validation error");
+            apiError.setMessage("Validation error - Data Integrity Violation");
             apiError.setValidationErrors(validationErrors);
             apiError.setStatus(400);
         }
@@ -62,7 +62,10 @@ public class ErrorHandler {
             apiError.setMessage(ex.getMessage());
             apiError.setStatus(401);
         }
-
+        else if (ex instanceof ActivationMailException){
+            apiError.setMessage(ex.getMessage());
+            apiError.setStatus(500);
+        }
 
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }

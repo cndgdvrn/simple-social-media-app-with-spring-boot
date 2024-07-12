@@ -39,12 +39,9 @@ public class JwtTokenProvider {
         return token;
     }
 
-    public Long verifyToken(String authorizationHeader) {
-
-        if (authorizationHeader.contains(" ") && authorizationHeader.split(" ")[0].equals("Bearer")) {
-            String token = null;
-            token = authorizationHeader.split(" ")[1];
-            try {
+    public User verifyToken(String authorizationHeader){
+        String token = authorizationHeader.split(" ")[1];
+        try {
                 SecretKey secretKeyBytes = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
                 Jws<Claims> claims = Jwts
                         .parser()
@@ -53,13 +50,40 @@ public class JwtTokenProvider {
                         .parseSignedClaims(token);
 
                 String stringId = claims.getPayload().getSubject();
-                return Long.valueOf(stringId);
+                User user = new User();
+                user.setId(Long.valueOf(stringId));
+                return user;
             } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
                      IllegalArgumentException ex) {
                 throw new JwtException(ex.getMessage());
             }
-        }else {
-            throw new JwtException("Invalid token");
-        }
     }
+
+
+
+//    public Long verifyToken(String authorizationHeader) {
+//
+//        if (authorizationHeader.contains(" ") && authorizationHeader.split(" ")[0].equals("Bearer")) {
+//            String token = null;
+//            token = authorizationHeader.split(" ")[1];
+//            try {
+//                SecretKey secretKeyBytes = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+//                Jws<Claims> claims = Jwts
+//                        .parser()
+//                        .verifyWith(secretKeyBytes)
+//                        .build()
+//                        .parseSignedClaims(token);
+//
+//                String stringId = claims.getPayload().getSubject();
+//                return Long.valueOf(stringId);
+//            } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+//                     IllegalArgumentException ex) {
+//                throw new JwtException(ex.getMessage());
+//            }
+//        }else {
+//            throw new JwtException("Invalid token");
+//        }
+//    }
+
+
 }

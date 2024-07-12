@@ -1,4 +1,4 @@
-package com.smapp.sm_app.validator;
+package com.smapp.sm_app.validation;
 
 import com.smapp.sm_app.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;
@@ -34,7 +34,7 @@ public class UniqueValidator implements ConstraintValidator<Unique,String> {
 
         if(exists){
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate(this.fieldName + " must be unique")
+            constraintValidatorContext.buildConstraintViolationWithTemplate(this.fieldName + " already in use")
                     .addConstraintViolation();
             return false;
         }

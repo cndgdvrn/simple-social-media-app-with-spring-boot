@@ -1,4 +1,4 @@
-package com.smapp.sm_app.validator;
+package com.smapp.sm_app.validation;
 
 
 import jakarta.validation.Constraint;

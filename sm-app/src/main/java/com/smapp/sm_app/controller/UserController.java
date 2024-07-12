@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable Long id, @AuthenticationPrincipal CurrentUser currentUser) {
         User user = userService.getUserById(id);
         UserDTO userDTO = new UserDTO(user);
         ResponseTemplate<UserDTO> responseTemplate = new ResponseTemplate<>("User fetched successfully", userDTO);

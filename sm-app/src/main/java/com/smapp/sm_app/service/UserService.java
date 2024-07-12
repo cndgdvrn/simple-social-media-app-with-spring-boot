@@ -3,6 +3,7 @@ package com.smapp.sm_app.service;
 import com.smapp.sm_app.dto.request.user.UserCreateRequest;
 import com.smapp.sm_app.dto.request.user.UserUpdateRequest;
 import com.smapp.sm_app.entity.User;
+import com.smapp.sm_app.exception.InvalidCredException;
 import com.smapp.sm_app.exception.UserNotFoundException;
 import com.smapp.sm_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,8 @@ public class UserService {
             User user = userCreateRequest.toUser();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
-        }catch (DataIntegrityViolationException ex) {
-            throw new DataIntegrityViolationException("Error creating user",ex);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DataIntegrityViolationException("Error creating user", ex);
         }
     }
 
@@ -54,4 +55,15 @@ public class UserService {
         userInDB.setPassword(userUpdateRequest.getPassword());
         return userRepository.save(userInDB);
     }
+
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+        return user;
+    }
+
+    public User findByActivationToken(String token) {
+        User user = userRepository.findByActivationToken(token).orElseThrow(() -> new InvalidCredException("Token is not valid " + token));
+        return user;
+    }
+
 }

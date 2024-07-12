@@ -1,5 +1,4 @@
-package com.smapp.sm_app.dto.request.user;
-
+package com.smapp.sm_app.dto.request.auth;
 
 import com.smapp.sm_app.entity.User;
 import com.smapp.sm_app.validation.Unique;
@@ -7,12 +6,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
-public class UserCreateRequest {
+public class RegisterRequest {
 
     @Size(min = 3, max = 30)
     @Unique(fieldName = "username")
@@ -34,14 +33,14 @@ public class UserCreateRequest {
     @Size(min = 3, max = 30)
     private String surname;
 
-
     public User toUser(){
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setName(name);
-        user.setSurname(surname);
+        user.setUsername(this.username);
+        user.setEmail(this.email);
+        user.setPassword(this.password);
+        user.setName(this.name);
+        user.setSurname(this.surname);
         return user;
     }
+
 }

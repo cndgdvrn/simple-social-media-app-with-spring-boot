@@ -1,7 +1,7 @@
 package com.smapp.sm_app.dto.request.user;
 
 
-import com.smapp.sm_app.validator.Unique;
+import com.smapp.sm_app.validation.Unique;
 import lombok.Data;
 
 @Data
