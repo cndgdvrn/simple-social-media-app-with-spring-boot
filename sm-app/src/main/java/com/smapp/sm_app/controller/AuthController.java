@@ -53,14 +53,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseTemplate);
     }
 
+    @PostMapping("/resend-activation")
+    public ResponseEntity<ResponseTemplate<?>> resendActivation(@RequestBody ResendActivationTokenRequest request) {
 
+        authService.resendActivationToken(request.getEmail());
+        ResponseTemplate<?> responseTemplate = new ResponseTemplate<>("Activation email sent", null);
+        return ResponseEntity.status(HttpStatus.OK).body(responseTemplate);
+    }
 
-//    @PostMapping("/resend-activation")
-//    public ResponseEntity<?> resendActivation(@RequestBody ResendActivationTokenRequest request) {
-//        mailService.sendActivationEmail(request.getEmail());
-//        ResponseTemplate<?> responseTemplate = new ResponseTemplate<>("Activation email sent", null);
-//        return ResponseEntity.status(HttpStatus.OK).body(responseTemplate);
-//    }
 
     @GetMapping("/activate")
     public ResponseEntity<ResponseTemplate<?>> activateUser(@RequestParam String token) {
@@ -68,4 +68,8 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseTemplate<>(response, null));
     }
 }
+
+
+
+
 

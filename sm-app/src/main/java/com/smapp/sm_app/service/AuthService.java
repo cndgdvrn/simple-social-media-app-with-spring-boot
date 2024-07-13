@@ -42,21 +42,33 @@ public class AuthService {
     public User register(RegisterRequest registerRequest) {
         User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User saved = userRepository.save(user);
         rabbitTemplate.convertAndSend("topic_exchange",
                 "activation", new MailMessageContent(user.getUsername(),user.getEmail(), user.getActivationToken()));
-        return userRepository.save(user);
-//        User user = registerRequest.toUser();
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        User savedUser = userRepository.save(user);
-//        String token = tokenProvider.createJwtToken(savedUser);
-//        return new AuthDTO(token,new UserDTO(savedUser));
+        return saved;
+
     }
 
     public String activateUser(String token) {
         User user = userService.findByActivationToken(token);
+
+        if(user.isActive()){
+            return "User already activated";
+        }
         user.setActive(true);
         user.setActivationToken(null);
         userRepository.save(user);
+        rabbitTemplate.convertAndSend("topic_exchange",
+                "mail", new MailMessageContent(user.getUsername(),user.getEmail(), user.getActivationToken()));
         return "User activated successfully";
+    }
+
+    public void resendActivationToken(String email) {
+        User user = userService.findByEmail(email);
+        if (user.isActive()){
+            throw new InvalidCredException("User already activated");
+        }
+        rabbitTemplate.convertAndSend("topic_exchange",
+                "activation", new MailMessageContent(user.getUsername(),user.getEmail(), user.getActivationToken()));
     }
 }

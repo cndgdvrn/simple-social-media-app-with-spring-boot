@@ -17,13 +17,12 @@ public class MailConsumer {
     private final Logger logger = LoggerFactory.getLogger(MailConsumer.class);
 
     @RabbitListener(queues = "${smapp.rabbitmq.mail.queue}")
-    public void consumeMailQueue(){
-        System.out.println("Mail that was consumed in the queue from rabbit listener: ");
+    public void consumeMailQueue(MailMessageContent mailMessageContent){
+        mailService.sendWelcomeEmail(mailMessageContent.getUsername(), mailMessageContent.getEmail());
     }
 
     @RabbitListener(queues = "${smapp.rabbitmq.activation.queue}")
     public void consumeActivationQueue(MailMessageContent mailMessageContent){
-        logger.info("Activation that was consumed in the queue from rabbit listener is started: " + mailMessageContent.getEmail());
         mailService.sendActivationEmail(mailMessageContent.getUsername(), mailMessageContent.getEmail(), mailMessageContent.getActivationToken());
         logger.info("Activation email sent to: " + mailMessageContent.getEmail());
     }

@@ -1,0 +1,10 @@
+# MIME türü                 Dosya uzantıları
+text/html                   html htm
+text/plain                  txt
+image/jpeg                  jpeg jpg
+image/png                   png
+application/pdf             pdf
+application/zip             zip
+application/msword          doc
+application/vnd.ms-excel    xls
+application/vnd.ms-powerpoint ppt
