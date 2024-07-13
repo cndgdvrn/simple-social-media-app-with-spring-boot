@@ -11,11 +11,13 @@ SM App is a Spring Boot application designed to provide a comprehensive solution
 - User Management: Enables CRUD operations on user data.
 
 
+## DB Schema
+![alt text](http://github.com/cndgdvrn/simple-social-media-app-with-spring-boot/blob/main/sm-app/docs/smapp-db-diagram.png?raw=true)
 
 ### Installation
 1. Clone the repository 
    ```sh
-   git clone https://github.com/your_username_/sm-app.git
+   git clone https://github.com/cndgdvrn/simple-social-media-app-with-spring-boot.git
    ```
 2. Execute the following command in the root directory before running the application to start the postgres database and rabbitmq server
       ```sh
